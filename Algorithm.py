@@ -45,7 +45,7 @@ class BFS_Algorithm:
         self.goal_pos = goal_pos
         self.grid_dim = grid_dim
         self.queue = Queue()
-        self.queue.put(Node(pos=start_pos, parent=None))
+        self.queue.push(Node(pos=start_pos, parent=None))
 
     def get_successors(self, node):
         x, y = node
@@ -65,7 +65,7 @@ class BFS_Algorithm:
 
             for neighbor in self.get_successors((x, y)):
                 if self.is_valid_cell(neighbor) and grid[neighbor[0], neighbor[1]] != 2:  # Check for obstacles
-                    self.queue.put(Node(pos=neighbor, parent=current))
+                    self.queue.push(Node(pos=neighbor, parent=current))
                     grid[neighbor[0], neighbor[1]] = 4  # Mark as visited
 
         return [], False, grid
@@ -129,7 +129,7 @@ class A_Star_Algorithm:
         self.goal_pos = goal_pos
         self.grid_dim = grid_dim
         self.open_set = PriorityQueue()
-        self.open_set.put((0, start_pos))
+        self.open_set.push((0, start_pos))
         self.came_from = {}
         self.g_score = {start_pos: 0}
         self.f_score = {start_pos: heuristic(start_pos, goal_pos)}
@@ -165,7 +165,7 @@ class A_Star_Algorithm:
                     self.came_from[neighbor] = current_node
                     self.g_score[neighbor] = tentative_g_score
                     self.f_score[neighbor] = tentative_g_score + heuristic(neighbor, self.goal_pos)
-                    self.open_set.put((self.f_score[neighbor], neighbor))
+                    self.open_set.push((self.f_score[neighbor], neighbor))
 
         return [], False, grid
 
@@ -175,7 +175,7 @@ class A_Star_Geometric_Algorithm:
         self.goal_pos = goal_pos
         self.grid_dim = grid_dim
         self.open_set = PriorityQueue()
-        self.open_set.put((0, start_pos))  # Initialize with start position
+        self.open_set.push((0, start_pos))  # Initialize with start position
         self.came_from = {}
         self.g_score = {start_pos: 0}  # Cost from start along the best known path
         self.f_score = {start_pos: heuristic(start_pos, goal_pos)}  # Estimated total cost from start to goal through y
@@ -211,7 +211,7 @@ class A_Star_Geometric_Algorithm:
                     self.came_from[neighbor] = current_node
                     self.g_score[neighbor] = tentative_g_score
                     self.f_score[neighbor] = tentative_g_score + heuristic(neighbor, self.goal_pos)
-                    self.open_set.put((self.f_score[neighbor], neighbor))
+                    self.open_set.push((self.f_score[neighbor], neighbor))
 
         return [], False, grid
 
